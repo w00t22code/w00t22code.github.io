@@ -20,17 +20,24 @@ window.addEventListener('DOMContentLoaded', function () {
       height: 30,
       x: 50,
       y: canvas.height/2,
-      fly: 15
+      fly: 10,
+      flyTime: 0,
+      frame: [2, 30, 58]
    };
 
    // переменные перемещения
    let move = 0;
    let move1 = 0;
-
    
-   // константы движения
-   const g = 2;
+   // константы движения 5 4
+   const g = 5;
    const speed = 4;
+
+   // константа времени 5
+   const flyTime = 5;
+
+   // смена картинки птицы
+   let frame = 0;
 
    class Tube {
       constructor(positionY) {
@@ -75,13 +82,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
    document.addEventListener('keydown', function(event) {
       if (event.code == 'Space' && bird.y > bird.height/2) {
-         bird.y = bird.y - bird.fly;
+         bird.flyTime = flyTime;
+         // bird.y = bird.y - bird.fly;
       }
    });
 
    buttonFly.addEventListener('click', function(event) {
       if (bird.y > bird.height/2) {
-         bird.y = bird.y - bird.fly;
+         bird.flyTime = flyTime;
+         // bird.y = bird.y - bird.fly;
       }
    })
 
@@ -93,8 +102,8 @@ window.addEventListener('DOMContentLoaded', function () {
       ctx.drawImage(image, 0, 0, 140, 200, canvas.width + move, 0, canvas.width, canvas.height);
    }
 
-   function drawBird() {
-      ctx.drawImage(image, 58, 490, 18, 18, bird.x, bird.y, bird.width, bird.height);
+   function drawBird(index) {
+      ctx.drawImage(image, bird.frame[index], 490, 18, 18, bird.x, bird.y, bird.width, bird.height);
    }
 
    function drawScore() {
@@ -116,20 +125,32 @@ window.addEventListener('DOMContentLoaded', function () {
          modal.classList.add('open');
          modalResult.textContent = score;
          clearInterval(interval);
+      } else if(bird.flyTime > 0) {
+         bird.y = bird.y - bird.fly;
+         bird.flyTime--;
       } else {
          bird.y = bird.y + g;
       }
 
       // для смены фона
       if(move - speed <= -canvas.width) {
-         move = 0
+         move = 0;
       } else {
          move = move - speed;
       }
 
       drawBg();
-      drawBg1();    
-      drawBird();
+      drawBg1();
+
+      // смена картинки
+      if( move % 24 === 0) {
+         frame = 0;
+      } else if ( move % 40 === 0) {
+         frame = 1;
+      } else if ( move % 64 === 0) {
+         frame = 2;
+      }
+      drawBird(frame);
       
       // появление новых столбов + score
       if(move1 - speed + 45 <= -canvas.width * 2) {
@@ -146,7 +167,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
             tubesH[index] = new TubeH(yH);
             tubesG[index] = new TubeG(yG);
-            console.log(tubesH)
          }
       }
 
