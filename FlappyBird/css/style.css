@@ -107,3 +107,13 @@ div, button {
 	top: 100px;
     opacity: 1;
 }
+
+@media screen and (max-width: 600px) {
+	.container {
+		width: 100%;
+	}
+
+	.modal-window{
+		width: 100%;
+	}
+}
