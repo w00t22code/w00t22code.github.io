@@ -1,7 +1,6 @@
 window.addEventListener('DOMContentLoaded', function () {
    const canvas = document.getElementById('canvas');
    const ctx = canvas.getContext("2d");
-   const buttonFly = document.querySelector('.button');
    const modal = document.querySelector('.modal');
    const modalResult = document.querySelector('.modal__main-text span');
    const modalClose = document.querySelector('.modal__header__exit');
@@ -22,7 +21,8 @@ window.addEventListener('DOMContentLoaded', function () {
       y: canvas.height/2,
       fly: 10,
       flyTime: 0,
-      frame: [2, 30, 58]
+      frame: [2, 30, 58, 30],
+      angle: 4
    };
 
    // переменные перемещения
@@ -35,6 +35,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
    // константа времени 5
    const flyTime = 5;
+   let rotatingTime = 0;
 
    // смена картинки птицы
    let frame = 0;
@@ -82,24 +83,24 @@ window.addEventListener('DOMContentLoaded', function () {
 
    document.addEventListener('keydown', function(event) {
       if (event.code == 'Space' && bird.y > bird.height/2) {
+         event.preventDefault();
          bird.flyTime = flyTime;
-         // bird.y = bird.y - bird.fly;
       }
    });
 
-   buttonFly.addEventListener('click', function(event) {
+   canvas.addEventListener('click', function(event) {
+      event.preventDefault();
       if (bird.y > bird.height/2) {
          bird.flyTime = flyTime;
-         // bird.y = bird.y - bird.fly;
       }
    })
 
    function drawBg() {
-      ctx.drawImage(image, 0, 0, 140, 200, move, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0, 140, 220, move, 0, canvas.width, canvas.height);
    }
 
    function drawBg1() {
-      ctx.drawImage(image, 0, 0, 140, 200, canvas.width + move, 0, canvas.width, canvas.height);
+      ctx.drawImage(image, 0, 0, 140, 220, canvas.width + move, 0, canvas.width, canvas.height);
    }
 
    function drawBird(index) {
@@ -116,21 +117,9 @@ window.addEventListener('DOMContentLoaded', function () {
       return Math.floor(Math.random() * Math.floor(max));
    }
 
-  
-
    function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      if(bird.y + 20 > canvas.height) {
-         modal.classList.add('open');
-         modalResult.textContent = score;
-         clearInterval(interval);
-      } else if(bird.flyTime > 0) {
-         bird.y = bird.y - bird.fly;
-         bird.flyTime--;
-      } else {
-         bird.y = bird.y + g;
-      }
 
       // для смены фона
       if(move - speed <= -canvas.width) {
@@ -142,15 +131,50 @@ window.addEventListener('DOMContentLoaded', function () {
       drawBg();
       drawBg1();
 
+
+
       // смена картинки
-      if( move % 24 === 0) {
-         frame = 0;
-      } else if ( move % 40 === 0) {
-         frame = 1;
-      } else if ( move % 64 === 0) {
-         frame = 2;
+      if( move % 16 === 0) {
+         frame++;
+         if(frame >= 4) {
+            frame = 0;
+         }
       }
-      drawBird(frame);
+
+
+      if(bird.y + 20 > canvas.height) {
+         modal.classList.add('open');
+         modalResult.textContent = score;
+         clearInterval(interval);
+      } else if(bird.flyTime > 0) {
+         bird.y = bird.y - bird.fly;
+         
+         rotatingTime <= 5 ? rotatingTime += 2 : rotatingTime = rotatingTime;
+
+
+         ctx.save();
+         ctx.translate(bird.x + bird.width/2, bird.y + bird.height/2)
+         ctx.rotate(-rotatingTime * bird.angle * Math.PI / 180);
+         ctx.translate(-bird.x - bird.width/2, -bird.y - bird.height/2)
+         drawBird(frame);
+         ctx.restore();
+         bird.flyTime--;
+      } else {
+         bird.y = bird.y + g;
+         rotatingTime >= -5 ? rotatingTime-- : rotatingTime=rotatingTime;
+
+
+         ctx.save();
+         ctx.translate(bird.x + bird.width/2, bird.y + bird.height/2)
+         ctx.rotate(-rotatingTime * bird.angle * Math.PI / 180);
+         ctx.translate(-bird.x - bird.width/2, -bird.y - bird.height/2)
+         drawBird(frame);
+         ctx.restore();
+      }
+
+      
+      
+     
       
       // появление новых столбов + score
       if(move1 - speed + 45 <= -canvas.width * 2) {
@@ -169,7 +193,6 @@ window.addEventListener('DOMContentLoaded', function () {
             tubesG[index] = new TubeG(yG);
          }
       }
-
       
 
       tubesH.forEach(function(el) {
@@ -192,7 +215,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
          if(bird.x + bird.width > canvas.width + el.move && 
             bird.x < canvas.width + el.move + el.width && 
-            bird.y + bird.height - 5 > el.positionY &&                 // -5 изза прозрачного фона -> поменять картинку и убрать -5
+            bird.y + bird.height - 5 > el.positionY &&
             bird.y < el.positionY + el.height) {
                modal.classList.add('open')
                modalResult.textContent = score;
