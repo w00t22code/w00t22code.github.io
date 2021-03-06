@@ -16,7 +16,7 @@ div, button {
     margin: 0 auto;
     margin-top: 25px;
     width: 80%;
-    height: 100vh;
+    height: calc(100vh - 25px);
 }
 
 #canvas {
