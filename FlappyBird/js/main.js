@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', function () {
    const canvas = document.getElementById('canvas');
    const ctx = canvas.getContext("2d");
+   const bttnFly = document.querySelector('.container');
    const modal = document.querySelector('.modal');
    const modalResult = document.querySelector('.modal__main-text span');
    const modalClose = document.querySelector('.modal__header__exit');
@@ -88,7 +89,7 @@ window.addEventListener('DOMContentLoaded', function () {
       }
    });
 
-   canvas.addEventListener('click', function(event) {
+   bttnFly.addEventListener('click', function(event) {
       event.preventDefault();
       if (bird.y > bird.height/2) {
          bird.flyTime = flyTime;
