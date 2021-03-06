@@ -1,3 +1,10 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v7.0.29,
+* Autoprefixer: v9.7.6
+* Browsers: last 4 version
+*/
+
 button {
     padding: 0;
     border: none;
@@ -9,7 +16,8 @@ button {
 }
 
 div, button {
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .container {
@@ -21,24 +29,7 @@ div, button {
 #canvas {
     margin: 0 auto;
     display: block;
-    background: #eee;
-}
-
-.buttons {
-    max-width: 480px;
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-}
-
-.button {
-    width: 60px;
-    height: 60px;
-    margin: 0 10px;
-    padding: 15px;
-    border: 1px solid black;
-    border-radius: 50%;
-    background-color: #f55555;
+	font-size: 20px;
 }
 
 .description {
@@ -55,6 +46,8 @@ div, button {
 	right: 0;
 	background: rgba(0, 0, 0, 0);
 	overflow: hidden;
+	-webkit-transition: background .5s;
+	-o-transition: background .5s;
 	transition: background .5s;
 	z-index: -1;
 }
@@ -68,15 +61,23 @@ div, button {
 	background: #727dff;
 	border: 1px solid #000;
 	border-radius: 5px;
+	-webkit-transition: top .5s ;
+	-o-transition: top .5s ;
 	transition: top .5s ;
     opacity: 0;
 }
 
 .modal__header{
 	width: 100%;
+	display: -webkit-box;
+	display: -ms-flexbox;
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	-webkit-box-pack: justify;
+	    -ms-flex-pack: justify;
+	        justify-content: space-between;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	font-size: 20px;
 	padding: 5px 10px;
 }
