@@ -1,10 +1,3 @@
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v7.0.29,
-* Autoprefixer: v9.7.6
-* Browsers: last 4 version
-*/
-
 button {
     padding: 0;
     border: none;
@@ -16,8 +9,7 @@ button {
 }
 
 div, button {
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .container {
@@ -46,8 +38,6 @@ div, button {
 	right: 0;
 	background: rgba(0, 0, 0, 0);
 	overflow: hidden;
-	-webkit-transition: background .5s;
-	-o-transition: background .5s;
 	transition: background .5s;
 	z-index: -1;
 }
@@ -61,23 +51,15 @@ div, button {
 	background: #727dff;
 	border: 1px solid #000;
 	border-radius: 5px;
-	-webkit-transition: top .5s ;
-	-o-transition: top .5s ;
 	transition: top .5s ;
     opacity: 0;
 }
 
 .modal__header{
 	width: 100%;
-	display: -webkit-box;
-	display: -ms-flexbox;
 	display: flex;
-	-webkit-box-pack: justify;
-	    -ms-flex-pack: justify;
-	        justify-content: space-between;
-	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	        align-items: center;
+	justify-content: space-between;
+	align-items: center;
 	font-size: 20px;
 	padding: 5px 10px;
 }
@@ -115,7 +97,10 @@ div, button {
 	}
 
 	.modal-window{
-		width: 100%;
-		left: 0;
+		width: 80%;
+		left: 50%;
+		-webkit-transform: translate(-50%, 0);
+		-ms-transform: translate(-50%, 0);
+				transform: translate(-50%, 0);
 	}
 }
